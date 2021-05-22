@@ -1,0 +1,160 @@
+local TeleportToAllGUI = Instance.new("ScreenGui")
+local TeleportToAllGUIFrame = Instance.new("Frame")
+local TeleportToAllGUITitle = Instance.new("TextLabel")
+local TeleportToAllGUIWaitTextbox = Instance.new("TextBox")
+local TeleportToAllGUITeleportToAllButton = Instance.new("TextButton")
+local TeleportToAllGUIMadeBy = Instance.new("TextLabel")
+
+TeleportToAllGUI.Name = "TeleportToAllGUI"
+TeleportToAllGUI.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+TeleportToAllGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+TeleportToAllGUIFrame.Name = "TeleportToAllGUIFrame"
+TeleportToAllGUIFrame.Parent = TeleportToAllGUI
+TeleportToAllGUIFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+TeleportToAllGUIFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+TeleportToAllGUIFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+
+TeleportToAllGUITitle.Name = "TeleportToAllGUITitle"
+TeleportToAllGUITitle.Parent = TeleportToAllGUIFrame
+TeleportToAllGUITitle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TeleportToAllGUITitle.BackgroundTransparency = 1.000
+TeleportToAllGUITitle.Size = UDim2.new(1, 0, 0.200000003, 0)
+TeleportToAllGUITitle.Text = "Teleport To All GUI"
+TeleportToAllGUITitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+TeleportToAllGUITitle.TextScaled = true
+TeleportToAllGUITitle.TextSize = 14.000
+TeleportToAllGUITitle.TextWrapped = true
+
+TeleportToAllGUIWaitTextbox.Name = "TeleportToAllGUIWaitTextbox"
+TeleportToAllGUIWaitTextbox.Parent = TeleportToAllGUIFrame
+TeleportToAllGUIWaitTextbox.AnchorPoint = Vector2.new(0.5, 0)
+TeleportToAllGUIWaitTextbox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TeleportToAllGUIWaitTextbox.BackgroundTransparency = 0.950
+TeleportToAllGUIWaitTextbox.Position = UDim2.new(0.5, 0, 0.300000012, 0)
+TeleportToAllGUIWaitTextbox.Size = UDim2.new(0.899999976, 0, 0.200000003, 0)
+TeleportToAllGUIWaitTextbox.Font = Enum.Font.SourceSans
+TeleportToAllGUIWaitTextbox.PlaceholderColor3 = Color3.fromRGB(0, 0, 0)
+TeleportToAllGUIWaitTextbox.PlaceholderText = "Time To Wait When Teleporting To Each Person."
+TeleportToAllGUIWaitTextbox.Text = ""
+TeleportToAllGUIWaitTextbox.TextColor3 = Color3.fromRGB(0, 0, 0)
+TeleportToAllGUIWaitTextbox.TextScaled = true
+TeleportToAllGUIWaitTextbox.TextSize = 30.000
+TeleportToAllGUIWaitTextbox.TextWrapped = true
+
+TeleportToAllGUITeleportToAllButton.Name = "TeleportToAllGUITeleportToAllButton"
+TeleportToAllGUITeleportToAllButton.Parent = TeleportToAllGUIFrame
+TeleportToAllGUITeleportToAllButton.AnchorPoint = Vector2.new(0.5, 0)
+TeleportToAllGUITeleportToAllButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TeleportToAllGUITeleportToAllButton.BackgroundTransparency = 0.950
+TeleportToAllGUITeleportToAllButton.Position = UDim2.new(0.5, 0, 0.600000024, 0)
+TeleportToAllGUITeleportToAllButton.Size = UDim2.new(0.899999976, 0, 0.200000003, 0)
+TeleportToAllGUITeleportToAllButton.Font = Enum.Font.SourceSans
+TeleportToAllGUITeleportToAllButton.Text = "Teleport To All"
+TeleportToAllGUITeleportToAllButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+TeleportToAllGUITeleportToAllButton.TextSize = 35.000
+TeleportToAllGUITeleportToAllButton.TextWrapped = true
+
+TeleportToAllGUIMadeBy.Name = "TeleportToAllGUIMadeBy"
+TeleportToAllGUIMadeBy.Parent = TeleportToAllGUIFrame
+TeleportToAllGUIMadeBy.AnchorPoint = Vector2.new(0.5, 0)
+TeleportToAllGUIMadeBy.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TeleportToAllGUIMadeBy.BackgroundTransparency = 1.000
+TeleportToAllGUIMadeBy.Position = UDim2.new(0.5, 0, 0.899999976, 0)
+TeleportToAllGUIMadeBy.Size = UDim2.new(0.899999976, 0, 0.100000001, 0)
+TeleportToAllGUIMadeBy.Font = Enum.Font.PermanentMarker
+TeleportToAllGUIMadeBy.Text = "Made by Meliodas#6313"
+TeleportToAllGUIMadeBy.TextColor3 = Color3.fromRGB(255, 255, 255)
+TeleportToAllGUIMadeBy.TextSize = 16.000
+TeleportToAllGUIMadeBy.TextWrapped = true
+
+local function WFUP_fake_script()
+	local script = Instance.new('LocalScript', TeleportToAllGUIFrame)
+
+	local UserInputService = game:GetService("UserInputService")
+
+	local gui = script.Parent
+
+	local dragging
+	local dragInput
+	local dragStart
+	local startPos
+
+	local function update(input)
+		local delta = input.Position - dragStart
+		gui.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+	end
+
+	gui.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			dragging = true
+			dragStart = input.Position
+			startPos = gui.Position
+
+			input.Changed:Connect(function()
+				if input.UserInputState == Enum.UserInputState.End then
+					dragging = false
+				end
+			end)
+		end
+	end)
+
+	gui.InputChanged:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+			dragInput = input
+		end
+	end)
+
+	UserInputService.InputChanged:Connect(function(input)
+		if input == dragInput and dragging then
+			update(input)
+		end
+	end)
+end
+coroutine.wrap(WFUP_fake_script)()
+local function FNRUGYT_fake_script() 
+	local script = Instance.new('LocalScript', TeleportToAllGUIFrame)
+
+	script.Parent.TeleportToAllGUITeleportToAllButton.MouseButton1Up:Connect(function()
+		local movl = script.Parent.TeleportToAllGUIWaitTextbox.Text
+		while true do
+			local Players = game:GetService("Players")
+			local LocalPlayer = Players.LocalPlayer
+
+			local plrsTable = Players:GetPlayers()
+
+			for i = 1, #plrsTable do
+				LocalPlayer.Character.HumanoidRootPart.CFrame = plrsTable[i].Character.HumanoidRootPart.CFrame 
+				wait(movl)
+			end
+		end
+	end)
+end
+coroutine.wrap(FNRUGYT_fake_script)()
+local function RMSDCDJ_fake_script()
+	local script = Instance.new('LocalScript', TeleportToAllGUIFrame)
+
+	function loaded()
+		local load_msg = "Teleport To All GUI By Meliodas#6313 Has Been Loaded. - Version 1.0 - Enjoy!"
+		print(load_msg)
+	end
+	script.Parent:TweenSize(
+		UDim2.new(0.25, 0, 0.5, 0),
+		"Out",
+		"Sine",
+		2,
+		false,
+		loaded()
+	)
+end
+coroutine.wrap(RMSDCDJ_fake_script)()
+local function TLOZU_fake_script()
+	local script = Instance.new('LocalScript', TeleportToAllGUIFrame)
+
+	--[[
+	----- Teleport To All GUI -----
+	Made by Meliodas#6313.
+	Enjoy :)
+	--]]
+end
+coroutine.wrap(TLOZU_fake_script)()
